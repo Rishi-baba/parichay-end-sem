@@ -1,0 +1,59 @@
+@import "tailwindcss";
+@font-face {
+  font-family: font1;
+  src: url(/fonts/Lausanne-300.woff2);
+}
+@font-face {
+  font-family: font2;
+  src: url(/fonts/Lausanne-500.woff2);
+}
+@font-face {
+  font-family: font3;
+  src: url(/fonts/ZENTRY-Regular.woff2);
+}
+@font-face {
+  font-family: font5;
+  src: url(/fonts/InterTight-VariableFont_wght.ttf);
+}
+@font-face {
+    font-family: font4;
+    src: url("/fonts/zentry-regular.woff2") format("woff2");
+  }
+
+
+html, body {
+  background-color: #000;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body::selection {
+  background-color: rgb(255, 0, 0);
+  color: #fff;
+}
+.moveX{
+    animation-name: moveAnimation;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.moveLink{
+    opacity: 0;
+    transition: all ease 0.3s;
+}
+
+.link:hover .moveLink{
+    opacity: 1;
+}
+
+@keyframes moveAnimation {
+    from{
+        transform: translateX(0);
+    }
+    to{
+        transform: translateX(-100%);
+    }
+}

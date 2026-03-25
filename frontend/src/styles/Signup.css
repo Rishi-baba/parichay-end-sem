@@ -1,0 +1,122 @@
+/* d:\4th sem project\frontend\src\styles\Signup.css */
+@import './Login.css';
+
+/* Override or add specific signup CSS elements */
+.auth-heading-signup {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #111;
+  margin: 0 0 24px 0;
+  letter-spacing: -2px;
+}
+
+.auth-heading-signup span {
+  color: #FF5A2C;
+  font-style: normal;
+}
+
+.auth-info-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.02);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 380px;
+}
+
+.info-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #FFF0ED;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111;
+}
+
+.info-text {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.form-checkbox-group {
+  margin-bottom: 24px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  color: #555;
+  font-weight: 500;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: relative;
+  display: inline-block;
+  min-width: 20px;
+  height: 20px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-right: 12px;
+  background-color: #fff;
+  transition: all 0.2s;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #FF5A2C;
+  border-color: #FF5A2C;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.text-orange {
+  color: #FF5A2C;
+  font-weight: 700;
+}

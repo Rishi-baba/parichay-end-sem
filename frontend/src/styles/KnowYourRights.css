@@ -1,0 +1,407 @@
+/* src/styles/KnowYourRights.css */
+.kyr-page {
+  margin-top: -40px;
+  font-family: 'Inter', sans-serif;
+  background-color: #fcfcfc;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.kyr-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.kyr-header {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+.kyr-header h1 {
+  font-size: 56px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -2px;
+  margin-bottom: 20px;
+}
+
+.kyr-header p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Category Nav */
+.kyr-category-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+
+.kyr-cat-btn {
+  background-color: #f1f1f1;
+  color: #555;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.kyr-cat-btn:hover {
+  background-color: #e5e5e5;
+}
+
+.kyr-cat-btn.active {
+  background-color: #FF5A2C;
+  color: #fff;
+}
+
+/* Main Layout Grid */
+.kyr-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+}
+
+/* Left Column - Rights & Guidelines */
+.kyr-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.kyr-card {
+  background-color: #f8f9fa;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #eaeaea;
+}
+
+.kyr-card-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 32px;
+}
+
+.icon-orange {
+  color: #FF5A2C;
+}
+
+.icon-blue {
+  color: #3B82F6;
+}
+
+.icon-red {
+  color: #E63946;
+}
+
+/* Rights List */
+.right-item {
+  display: flex;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.right-item:last-child {
+  margin-bottom: 0;
+}
+
+.right-num {
+  font-size: 24px;
+  font-weight: 800;
+  color: #FF5A2C;
+  line-height: 1;
+}
+
+.right-content h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 8px 0;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.right-content p {
+  display: inline;
+  font-size: 15px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Action Rows (What to do / When to act) */
+.kyr-action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.action-card {
+  background-color: #fcfaf9;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #f2e9e4;
+}
+
+.action-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 24px;
+}
+
+.action-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.action-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.action-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #FF5A2C;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Dark Promo Banner */
+.kyr-dark-banner {
+  background: linear-gradient(135deg, #1f1f1f, #2d2a26);
+  border-radius: 20px;
+  padding: 40px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.promo-badge {
+  background-color: #FF5A2C;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  width: fit-content;
+  margin-bottom: 16px;
+}
+
+.kyr-dark-banner h2 {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  line-height: 1.2;
+}
+
+.kyr-dark-banner p {
+  font-size: 15px;
+  color: #ccc;
+  margin: 0 0 32px 0;
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.kyr-read-link {
+  color: #FF5A2C;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 1px;
+}
+
+/* Right Column - Status & Actions */
+.kyr-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.case-card {
+  background-color: #faf9f8;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #eaeaea;
+}
+
+.case-card>h3 {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 32px;
+}
+
+.case-status {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.status-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.status-yes .status-icon {
+  background-color: #FF5A2C;
+  color: #fff;
+}
+
+.status-no .status-icon {
+  background-color: #666;
+  color: #fff;
+}
+
+.status-text h4 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #111;
+  margin: 0 0 6px 0;
+}
+
+.status-text p {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.gavel-img {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 24px;
+  object-fit: cover;
+  height: 160px;
+}
+
+.kyr-action-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kyr-btn {
+  background-color: #eaeaea;
+  color: #111;
+  border: none;
+  border-radius: 12px;
+  padding: 18px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.2s;
+}
+
+.kyr-btn:hover {
+  background-color: #d4d4d4;
+}
+
+.kyr-btn-outline {
+  background-color: transparent;
+  border: 2px solid #eaeaea;
+}
+
+.kyr-btn-outline:hover {
+  border-color: #111;
+}
+
+.orange-promo-card {
+  background-color: #FF5A2C;
+  border-radius: 20px;
+  padding: 40px 32px;
+  color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.promo-icon-large {
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+
+.orange-promo-card h3 {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  line-height: 1.2;
+}
+
+.orange-promo-card p {
+  font-size: 14px;
+  color: #FFE0D8;
+  margin: 0 0 32px 0;
+  line-height: 1.5;
+}
+
+.dl-btn {
+  background-color: #fff;
+  color: #FF5A2C;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .kyr-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kyr-action-row {
+    grid-template-columns: 1fr;
+  }
+}

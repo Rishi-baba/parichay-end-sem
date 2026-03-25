@@ -1,0 +1,344 @@
+/* src/styles/LawyerChat.css */
+.lawyer-chat-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Inter', sans-serif;
+  background-color: #FAFAFA;
+  overflow: hidden;
+}
+
+/* Navbar */
+.lc-navbar {
+  height: 70px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eaeaea;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.lc-navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lc-back-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #111;
+  font-weight: 800;
+}
+
+.lc-brand {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+.lc-page-title {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid #ddd;
+}
+
+.lc-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.lc-case-select {
+  padding: 8px 32px 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #eaeaea;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  cursor: pointer;
+  appearance: none;
+  outline: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position-x: 95%;
+  background-position-y: center;
+  max-width: 250px;
+}
+
+/* Body */
+.lc-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Chat Area */
+.lc-chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+  position: relative;
+}
+
+.lc-messages-container {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.lc-msg-row {
+  display: flex;
+  width: 100%;
+}
+
+.lc-msg-row.user {
+  justify-content: flex-end;
+}
+
+.lc-msg-row.lawyer {
+  justify-content: flex-start;
+}
+
+.lc-bubble {
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 70%;
+  white-space: pre-wrap;
+}
+
+.lc-msg-row.user .lc-bubble {
+  background-color: #FF5A2C;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.lc-msg-row.lawyer .lc-bubble {
+  background-color: #f1f1f1;
+  color: #111;
+  border-bottom-left-radius: 4px;
+}
+
+.lc-msg-meta {
+  font-size: 10px;
+  color: #999;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+.lc-msg-row.user .lc-msg-meta {
+  text-align: right;
+}
+
+.lc-system-msg {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  padding: 12px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+/* Input Area */
+.lc-input-wrapper {
+  padding: 24px 40px;
+  background: #fafafa;
+}
+
+.lc-input-box {
+  display: flex;
+  align-items: center;
+  background: #fdfdfd;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.lc-attach-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #666;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.lc-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  background: transparent;
+}
+
+.lc-send-btn {
+  background: #FF5A2C;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.5px;
+}
+.lc-send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Right Sidebar */
+.lc-sidebar {
+  width: 320px;
+  background-color: #ffffff;
+  border-left: 1px solid #eaeaea;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.lc-sidebar-scroll {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.lc-sidebar-section {
+  margin-bottom: 32px;
+}
+
+.lc-sidebar-title {
+  font-size: 10px;
+  font-weight: 800;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 16px;
+}
+
+.lc-case-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111;
+  margin: 0 0 20px 0;
+}
+
+.lc-case-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+.lc-case-label {
+  color: #666;
+}
+.lc-case-val {
+  font-weight: 700;
+  color: #111;
+}
+
+.lc-urgency-badge {
+  background: #FFF0ED;
+  color: #FF5A2C;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.lc-status-badge {
+  background: #FFF6E5;
+  color: #D97706;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* Evidence Cards in Sidebar */
+.lc-evidence-card {
+  background: #fafafa;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.lc-evidence-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 4px 0;
+}
+
+.lc-evidence-card p {
+  font-size: 11px;
+  color: #666;
+  margin: 0 0 12px 0;
+}
+
+.lc-attach-ev-btn {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #333;
+  width: 100%;
+}
+.lc-attach-ev-btn:hover {
+  background: #f1f1f1;
+}
+
+.lc-legal-note {
+  background: #F0F4FA;
+  border-left: 3px solid #3B82F6;
+  padding: 16px;
+  border-radius: 0 8px 8px 0;
+  margin-top: 24px;
+}
+
+.lc-legal-note h4 {
+  font-size: 11px;
+  font-weight: 800;
+  color: #1E3A8A;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lc-legal-note p {
+  font-size: 11px;
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.5;
+}
