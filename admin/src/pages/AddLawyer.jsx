@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AddLawyer.css';
+import API_URL from '../api/api';
 
 const AddLawyer = () => {
   const [formData, setFormData] = useState({
@@ -26,8 +27,12 @@ const AddLawyer = () => {
   useEffect(() => {
     const fetchCases = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/admin/cases", {
-          credentials: "include"
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${API_URL}/api/admin/cases`, {
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
         if (res.ok) {
           const data = await res.json();
@@ -115,9 +120,13 @@ const AddLawyer = () => {
     const formDataFile = new FormData();
     formDataFile.append("image", file);
     try {
-      const res = await fetch("http://localhost:5000/api/upload", {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         credentials: "include",
+        headers: {
+           Authorization: `Bearer ${token}`
+        },
         body: formDataFile
       });
       if (res.ok) {
@@ -140,9 +149,13 @@ const AddLawyer = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/admin/lawyers", {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/admin/lawyers`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
         credentials: "include",
         body: JSON.stringify({ ...formData, photo: photoUrl })
       });

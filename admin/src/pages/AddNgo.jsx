@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './AddLawyer.css'; // Reusing the identical sleek styling from Lawyer to ensure consistency
+import API_URL from '../api/api';
 
 const AddNgo = () => {
   const [formData, setFormData] = useState({
@@ -47,9 +48,13 @@ const AddNgo = () => {
     const fd = new FormData();
     fd.append("image", file);
     try {
-      const res = await fetch("http://localhost:5000/api/upload", {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         body: fd
       });
       if (res.ok) {
@@ -72,10 +77,12 @@ const AddNgo = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/admin/ngos", {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/admin/ngos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
         credentials: "include", // Ensure session token is sent
         body: JSON.stringify({ ...formData, logo: logoUrl })

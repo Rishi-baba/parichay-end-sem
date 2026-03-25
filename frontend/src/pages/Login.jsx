@@ -45,7 +45,7 @@ export default function Login() {
     setLoading(true);
     try {
       const data = await loginUser({ email: form.email, password: form.password });
-      login(data.user);
+      login(data.user, data.accessToken);
       navigate("/");
     } catch (err) {
       setGlobalError(err.message || "Login failed. Please check your credentials.");

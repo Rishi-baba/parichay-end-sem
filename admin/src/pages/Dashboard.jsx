@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
+import API_URL from '../api/api';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("users");
@@ -14,8 +15,12 @@ const Dashboard = () => {
       setError(null);
       setData([]); // clear old data
       try {
-        const res = await fetch(`http://localhost:5000/api/admin/${activeTab}`, {
-          credentials: "include"
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${API_URL}/api/admin/${activeTab}`, {
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
 
         if (!res.ok) {
@@ -37,9 +42,13 @@ const Dashboard = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/${activeTab}/${id}`, {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/admin/${activeTab}/${id}`, {
         method: "DELETE",
-        credentials: "include"
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       
       if(res.ok) {

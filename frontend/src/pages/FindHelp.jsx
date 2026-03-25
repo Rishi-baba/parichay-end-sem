@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/FindHelp.css';
+import API_URL from '../api/api';
 
 const dummyNGOs = [
   {
@@ -85,7 +86,7 @@ export default function FindHelp() {
   useEffect(() => {
     const fetchNgos = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/public");
+        const res = await fetch(`${API_URL}/api/public`);
         if (res.ok) setNgos(await res.json());
       } catch (err) {
         console.error("Failed to fetch NGOs:", err);

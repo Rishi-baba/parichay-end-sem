@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import API_URL from '../api/api';
 import './Login.css';
 
 const Login = () => {
@@ -21,7 +22,7 @@ const Login = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -36,6 +37,10 @@ const Login = () => {
 
       if (data.user.role !== 'admin') {
         throw new Error('Unauthorized: Insufficient security clearance.');
+      }
+
+      if (data.accessToken) {
+        localStorage.setItem("token", data.accessToken);
       }
 
       setUser(data.user);

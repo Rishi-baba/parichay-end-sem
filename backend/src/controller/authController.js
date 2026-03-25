@@ -52,6 +52,8 @@ exports.register = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "User registered successfully",
+      accessToken,
+      refreshToken,
       user: {
         id: user._id,
         name: user.name,
@@ -117,6 +119,8 @@ exports.login = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "User logged in successfully",
+      accessToken,
+      refreshToken,
       user: {
         id: user._id,
         name: user.name,
@@ -277,7 +281,8 @@ exports.forgotPassword = async (req, res) => {
 
     await user.save();
 
-    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`
+    const origin = req.get("origin") || "https://parichay-frontend.vercel.app";
+    const resetUrl = `${origin}/reset-password/${resetToken}`
 
     console.log(`Password reset link: ${resetUrl}`)
     res.json({

@@ -19,7 +19,8 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
-  function login(userData) {
+  function login(userData, token) {
+    if (token) localStorage.setItem("token", token);
     console.log("Setting user from login:", userData);
     setUser(userData);
   }
@@ -27,6 +28,7 @@ export function AuthProvider({ children }) {
   async function logout() {
     try {
       await logoutUser();
+      localStorage.removeItem("token");
     } catch (_) { }
     setUser(null);
   }

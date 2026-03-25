@@ -24,8 +24,21 @@ app.use(helmet({
   crossOriginResourcePolicy: false,
 }))
 app.use(cookieParser())
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://parichay-frontend.vercel.app",
+  "https://parichay-admin.vercel.app",
+];
+
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5174"],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());

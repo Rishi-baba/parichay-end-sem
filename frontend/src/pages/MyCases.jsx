@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/DashboardLayout.css';
+import API_URL from '../api/api';
 
 const MyCases = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const MyCases = () => {
   useEffect(() => {
     const fetchCases = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/case/my-cases", {
+        const res = await fetch(`${API_URL}/api/case/my-cases`, {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",

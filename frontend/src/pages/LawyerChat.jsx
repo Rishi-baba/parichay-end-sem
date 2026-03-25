@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/LawyerChat.css';
+import API_URL from '../api/api';
 
 const LawyerChat = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const LawyerChat = () => {
         const token = localStorage.getItem("token");
 
         // Fetch Cases
-        const caseRes = await fetch("http://localhost:5000/api/case/my-cases", {
+        const caseRes = await fetch(`${API_URL}/api/case/my-cases`, {
           credentials: "include",
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -57,7 +58,7 @@ const LawyerChat = () => {
         }
 
         // Fetch Evidence
-        const evRes = await fetch("http://localhost:5000/api/evidence/my-evidence", {
+        const evRes = await fetch(`${API_URL}/api/evidence/my-evidence`, {
           credentials: "include",
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -130,7 +131,7 @@ const LawyerChat = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/evidence/attach-to-case", {
+      const res = await fetch(`${API_URL}/api/evidence/attach-to-case`, {
         method: "POST",
         credentials: "include",
         headers: {

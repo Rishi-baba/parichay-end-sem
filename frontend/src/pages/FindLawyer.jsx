@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, SlidersHorizontal, Sparkles } from 'lucide-react';
 import LawyerCard from '../components/LawyerCard';
 import '../styles/FindLawyer.css';
+import API_URL from '../api/api';
 
 // Mock Data
 const MOCK_LAWYERS = [
@@ -77,7 +78,7 @@ const FindLawyer = () => {
     useEffect(() => {
         const fetchLawyers = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/public/lawyers/all");
+                const res = await fetch(`${API_URL}/api/public/lawyers/all`);
                 if (res.ok) {
                     const data = await res.json();
                     setAllLawyers(data);

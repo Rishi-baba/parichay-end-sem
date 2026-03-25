@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/NgoDetails.css';
+import API_URL from '../api/api';
 
 export default function NgoDetails() {
   const { id } = useParams();
@@ -11,7 +12,7 @@ export default function NgoDetails() {
   useEffect(() => {
     const fetchNgo = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/public/${id}`);
+        const res = await fetch(`${API_URL}/api/public/${id}`);
         if (res.ok) {
           setNgo(await res.json());
         } else {

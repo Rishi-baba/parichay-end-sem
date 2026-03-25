@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/SaveEvidence.css';
+import API_URL from '../api/api';
 
 export default function SaveEvidence() {
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ export default function SaveEvidence() {
     });
 
     try {
-      const response = await fetch("http://localhost:5000/api/evidence/create", {
+      const response = await fetch(`${API_URL}/api/evidence/create`, {
         method: "POST",
         credentials: "include",
         body: data // FormData automatically sets multipart/form-data with proper boundary

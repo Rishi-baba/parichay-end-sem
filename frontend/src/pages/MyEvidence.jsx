@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/DashboardLayout.css';
+import API_URL from '../api/api';
 
 const MyEvidence = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const MyEvidence = () => {
   useEffect(() => {
     const fetchEvidence = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/evidence/my-evidence", {
+        const res = await fetch(`${API_URL}/api/evidence/my-evidence`, {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
@@ -114,7 +115,7 @@ const MyEvidence = () => {
 
                 const extType = getFileType(ev.files);
                 const fileImage = (ev.files && ev.files.length > 0 && extType === 'image') 
-                                    ? `http://localhost:5000${ev.files[0]}` 
+                                    ? `${API_URL}${ev.files[0]}` 
                                     : ev.image;
 
                 return (

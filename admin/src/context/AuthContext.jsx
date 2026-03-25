@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import API_URL from "../api/api";
 
 export const AuthContext = createContext();
 
@@ -9,8 +10,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/auth/profile", {
-          credentials: "include"
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${API_URL}/api/auth/profile`, {
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
         if (res.ok) {
           const data = await res.json();
@@ -29,10 +34,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await fetch("http://localhost:5000/api/auth/logout", {
+      await fetch(`${API_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include"
       });
+      localStorage.removeItem("token");
       setUser(null);
     } catch (err) {
       console.error("Logout failed", err);

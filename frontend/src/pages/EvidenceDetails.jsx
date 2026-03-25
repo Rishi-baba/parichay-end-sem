@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/EvidenceDetails.css';
+import API_URL from '../api/api';
 
 export default function EvidenceDetails() {
   const { id } = useParams();
@@ -13,7 +14,7 @@ export default function EvidenceDetails() {
     const fetchEvidence = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/evidence/${id}`, {
+        const res = await fetch(`${API_URL}/api/evidence/${id}`, {
           credentials: "include",
           headers: {
             Authorization: `Bearer ${token}`
@@ -42,7 +43,7 @@ export default function EvidenceDetails() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/evidence/${id}`, {
+      const res = await fetch(`${API_URL}/api/evidence/${id}`, {
         method: "DELETE",
         credentials: "include",
         headers: {
@@ -107,7 +108,7 @@ export default function EvidenceDetails() {
           <div className="ed-files-grid">
             {evidence.files && evidence.files.map((file, idx) => {
               const ext = getExtFromSrc(file);
-              const url = `http://localhost:5000${file}`;
+              const url = `${API_URL}${file}`;
               const basename = file.split('/').pop();
 
               if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {

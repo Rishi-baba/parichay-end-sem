@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:5000/api/auth";
+import API_URL from "./api";
+const BASE_URL = `${API_URL}/api/auth`;
 
 /**
  * Internal helper — sends a request and safely parses the response.

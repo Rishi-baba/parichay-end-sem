@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../styles/ChatPage.css';
+import API_URL from '../api/api';
 
 
 const UserIconSVG = () => (
@@ -44,7 +45,7 @@ const ChatPage = () => {
     const fetchBotResponse = async (userMessage) => {
         setIsTyping(true);
         try {
-            const response = await fetch('http://localhost:5000/api/chat', {
+            const response = await fetch(`${API_URL}/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -122,7 +123,7 @@ const ChatPage = () => {
 
         setIsSubmitting(true);
         try {
-            const response = await fetch('http://localhost:5000/api/case/create', {
+            const response = await fetch(`${API_URL}/api/case/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
