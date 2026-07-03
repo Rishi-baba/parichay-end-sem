@@ -35,7 +35,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/chat" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />
+        <Route path="/chat" element={<ChatPage />} />
 
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />

@@ -1,22 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { 
+    Send, 
+    Paperclip, 
+    Shield, 
+    Scale, 
+    FileText, 
+    LogOut, 
+    Globe, 
+    Lock, 
+    Info, 
+    Menu, 
+    X, 
+    Briefcase,
+    ChevronRight,
+    AlertTriangle
+} from 'lucide-react';
 import '../styles/ChatPage.css';
 import API_URL from '../api/api';
-
-
-const UserIconSVG = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-        <circle cx="12" cy="7" r="4"></circle>
-    </svg>
-);
-const SendIconSVG = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '-2px' }}>
-        <line x1="22" y1="2" x2="11" y2="13"></line>
-        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-    </svg>
-);
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -24,13 +26,15 @@ const ChatPage = () => {
     const { user, logout } = useAuth();
 
     const [messages, setMessages] = useState([
-        { id: 1, sender: 'bot', text: 'Hello! I am your Parichay Assistant. How can I help you today? Please describe your situation.' }
+        { id: 1, sender: 'bot', text: 'Hello! I am your Parichay Assistant. How can I help you today? Please describe your situation, and I will guide you through your legal rights and options.' }
     ]);
     const [caseForm, setCaseForm] = useState({ title: '', category: '', urgency: '' });
     const [formError, setFormError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [inputText, setInputText] = useState('');
     const [isTyping, setIsTyping] = useState(false);
+    const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+    const [currentLang, setCurrentLang] = useState('English');
     const messagesEndRef = useRef(null);
     const hasInitialized = useRef(false);
 
@@ -41,6 +45,30 @@ const ChatPage = () => {
     useEffect(() => {
         scrollToBottom();
     }, [messages, isTyping]);
+
+    // Handle restoring session from localStorage on mount
+    useEffect(() => {
+        const savedMessages = localStorage.getItem('parichay_guest_messages');
+        const savedForm = localStorage.getItem('parichay_guest_case_form');
+        
+        if (savedMessages) {
+            try {
+                setMessages(JSON.parse(savedMessages));
+            } catch (e) {
+                console.error("Error parsing saved messages:", e);
+            }
+            localStorage.removeItem('parichay_guest_messages');
+        }
+        
+        if (savedForm) {
+            try {
+                setCaseForm(JSON.parse(savedForm));
+            } catch (e) {
+                console.error("Error parsing saved case form:", e);
+            }
+            localStorage.removeItem('parichay_guest_case_form');
+        }
+    }, []);
 
     const fetchBotResponse = async (userMessage) => {
         setIsTyping(true);
@@ -114,10 +142,23 @@ const ChatPage = () => {
         }
     };
 
+    // Helper to store session details before redirecting to login
+    const saveSessionAndRedirect = (alertMessage) => {
+        localStorage.setItem('parichay_guest_messages', JSON.stringify(messages));
+        localStorage.setItem('parichay_guest_case_form', JSON.stringify(caseForm));
+        navigate('/login', { state: { message: alertMessage, from: '/chat' } });
+    };
+
     const handleSubmitProblem = async () => {
         setFormError('');
         if (!caseForm.title || !caseForm.category || !caseForm.urgency) {
             setFormError('Please fill in all fields (Title, Category, Urgency) in your case panel.');
+            return;
+        }
+
+        // Guest check: If unauthenticated, redirect to login but save current session
+        if (!user) {
+            saveSessionAndRedirect('Please sign in or create an account to submit your case details.');
             return;
         }
 
@@ -137,7 +178,6 @@ const ChatPage = () => {
                 throw new Error(data.message || 'Failed to submit case.');
             }
 
-            // Collect all user messages or the full conversation
             const fullConversation = messages
                 .map(m => `${m.sender.toUpperCase()}: ${m.text}`)
                 .join('\n\n');
@@ -156,13 +196,42 @@ const ChatPage = () => {
         navigate('/login');
     };
 
+    const suggestedPrompts = [
+        "What are my rights in a rental dispute?",
+        "My employer is delaying my salary.",
+        "How can I file a complaint for workplace harassment?",
+        "What is the procedure for police verification?"
+    ];
+
+    const handleSuggestedPromptClick = (promptText) => {
+        setInputText(promptText);
+    };
+
+    const handleActionClick = (targetPath, resourceName) => {
+        if (!user) {
+            saveSessionAndRedirect(`Please login or sign up to access ${resourceName}.`);
+        } else {
+            navigate(targetPath);
+        }
+    };
+
     return (
         <div className="chat-page-root">
             {/* Custom Navbar for Chat Page */}
             <nav className="chat-navbar">
-                <NavLink to="/" className="chat-navbar-logo">
-                    Parichay
-                </NavLink>
+                <div className="chat-navbar-left">
+                    <button 
+                        className="mobile-sidebar-toggle" 
+                        onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+                        aria-label="Toggle Case Form"
+                    >
+                        {isMobileSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+                    </button>
+                    <NavLink to="/" className="chat-navbar-logo">
+                        <Scale size={24} className="logo-icon-accent" />
+                        <span>Parichay</span>
+                    </NavLink>
+                </div>
 
                 <div className="chat-navbar-links">
                     <NavLink to="/documents" className="chat-navbar-link">Documents</NavLink>
@@ -174,33 +243,42 @@ const ChatPage = () => {
                 <div className="chat-navbar-user">
                     {user ? (
                         <>
-                            <span style={{ color: '#666' }}>Hi, {user.name}</span>
+                            <span className="user-greeting">Hi, {user.name}</span>
                             <div className="chat-user-icon">
-                                <UserIconSVG />
+                                {user.name.charAt(0).toUpperCase()}
                             </div>
-                            <button className="chat-logout-btn" onClick={handleLogout}>Logout</button>
+                            <button className="chat-logout-btn" onClick={handleLogout} title="Logout">
+                                <LogOut size={18} />
+                            </button>
                         </>
                     ) : (
-                        <button className="chat-logout-btn" onClick={() => navigate('/login')}>Login / sign-in</button>
+                        <>
+                            <span className="user-greeting">Hi, Guest</span>
+                            <button className="chat-login-btn" onClick={() => saveSessionAndRedirect()}>Login / Sign-in</button>
+                        </>
                     )}
                 </div>
             </nav>
 
             {/* Layout Body */}
             <div className="chat-body-container">
-                {/* Left Sidebar */}
-                <aside className="chat-sidebar">
+                {/* Sidebar - Desktop and Mobile Drawer */}
+                <aside className={`chat-sidebar ${isMobileSidebarOpen ? 'mobile-open' : ''}`}>
                     <div className="chat-sidebar-scroll">
                         <div className="sidebar-title">
-                            <span style={{ fontSize: '20px', lineHeight: '1' }}>⛑️</span> Your Case
+                            <span className="sidebar-emoji-icon">⚖️</span>
+                            <h2>Your Case Panel</h2>
                         </div>
 
-                        <div className="sidebar-card" style={{ padding: '16px' }}>
-                            <div style={{ marginBottom: '16px' }}>
-                                <label className="card-label" style={{ display: 'block', marginBottom: '8px' }}>Case Title</label>
+                        <p className="sidebar-instruction">
+                            Fill out these details to structure your consultation before submitting or saving.
+                        </p>
+
+                        <div className="sidebar-card">
+                            <div className="input-group-field">
+                                <label className="card-label">Case Title</label>
                                 <input 
-                                    className="chat-input-field" 
-                                    style={{ width: '100%', border: '1px solid #eaeaea', borderRadius: '8px', padding: '10px 12px', fontSize: '14px', background: '#fdfdfd' }} 
+                                    className="chat-input-field-styled" 
                                     placeholder="e.g., Unfair Dismissal" 
                                     value={caseForm.title}
                                     onChange={(e) => {
@@ -209,11 +287,11 @@ const ChatPage = () => {
                                     }}
                                 />
                             </div>
-                            <div style={{ marginBottom: '16px' }}>
-                                <label className="card-label" style={{ display: 'block', marginBottom: '8px' }}>Category</label>
+
+                            <div className="input-group-field">
+                                <label className="card-label">Category</label>
                                 <select 
-                                    className="chat-input-field" 
-                                    style={{ width: '100%', border: '1px solid #eaeaea', borderRadius: '8px', padding: '10px 12px', fontSize: '14px', background: '#fdfdfd' }}
+                                    className="chat-input-field-styled"
                                     value={caseForm.category}
                                     onChange={(e) => {
                                         setCaseForm({...caseForm, category: e.target.value});
@@ -228,11 +306,11 @@ const ChatPage = () => {
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
-                            <div style={{ marginBottom: '8px' }}>
-                                <label className="card-label" style={{ display: 'block', marginBottom: '8px' }}>Urgency Level</label>
+
+                            <div className="input-group-field">
+                                <label className="card-label">Urgency Level</label>
                                 <select 
-                                    className="chat-input-field" 
-                                    style={{ width: '100%', border: '1px solid #eaeaea', borderRadius: '8px', padding: '10px 12px', fontSize: '14px', background: '#fdfdfd' }}
+                                    className="chat-input-field-styled"
                                     value={caseForm.urgency}
                                     onChange={(e) => {
                                         setCaseForm({...caseForm, urgency: e.target.value});
@@ -245,21 +323,35 @@ const ChatPage = () => {
                                     <option value="high">High Risk</option>
                                 </select>
                             </div>
-                            {formError && <div style={{ color: '#e53e3e', fontSize: '12px', marginTop: '12px', fontWeight: '600' }}>{formError}</div>}
+
+                            {formError && (
+                                <div className="form-error-bubble">
+                                    <AlertTriangle size={14} />
+                                    <span>{formError}</span>
+                                </div>
+                            )}
                         </div>
 
-                        <div className="next-actions-title">Next Actions</div>
-                        <div>
-                            <button onClick={() => navigate("/save-evidence")} className="action-btn primary">
-                                <span className="action-icon">🗄️</span> Save Evidence
+                        <div className="next-actions-title">Resources & Next Steps</div>
+                        <div className="action-buttons-group">
+                            <button onClick={() => handleActionClick("/save-evidence", "evidence locker")} className="action-btn primary">
+                                <span className="action-icon">🗄️</span> 
+                                <div className="btn-label-group">
+                                    <span className="btn-title">Save Evidence</span>
+                                    <span className="btn-subtext">Secure your documents</span>
+                                </div>
+                                <ChevronRight size={16} className="btn-arrow" />
                             </button>
-                            <button onClick={() => navigate("/find-lawyer")} className="action-btn">
-                                <span className="action-icon">⚖️</span> Talk to a lawyer
+                            <button onClick={() => handleActionClick("/find-lawyer", "lawyer directories")} className="action-btn">
+                                <span className="action-icon">🤝</span>
+                                <div className="btn-label-group">
+                                    <span className="btn-title">Find a Lawyer</span>
+                                    <span className="btn-subtext">Consult verified lawyers</span>
+                                </div>
+                                <ChevronRight size={16} className="btn-arrow" />
                             </button>
                         </div>
                     </div>
-
-
                 </aside>
 
                 {/* Main Chat Area */}
@@ -267,17 +359,32 @@ const ChatPage = () => {
                     {/* Top Status Bar */}
                     <div className="chat-status-bar">
                         <div className="status-left">
-                            {/* <div><span className="dot-green"></span> Anonymous session</div> */}
+                            <div className="status-indicator">
+                                <span className="dot-green"></span>
+                                <span className="status-text">{user ? "Session Active" : "Guest Session"}</span>
+                            </div>
                             <div className="status-divider"></div>
-                            <div>STATUS: <span className="status-highlight">In progress</span></div>
+                            <div className="status-tag">STATUS: <span className="status-highlight">{user ? "In progress" : "Anonymous Mode"}</span></div>
                         </div>
+                        
                         <div className="status-right">
                             <div className="lang-toggle">
-                                <button className="lang-btn active">English</button>
-                                <button className="lang-btn">Hindi</button>
+                                <button 
+                                    className={`lang-btn ${currentLang === 'English' ? 'active' : ''}`}
+                                    onClick={() => setCurrentLang('English')}
+                                >
+                                    English
+                                </button>
+                                <button 
+                                    className={`lang-btn ${currentLang === 'Hindi' ? 'active' : ''}`}
+                                    onClick={() => setCurrentLang('Hindi')}
+                                >
+                                    Hindi
+                                </button>
                             </div>
                             <div className="private-badge">
-                                <span>🔒</span> PRIVATE
+                                <Lock size={12} />
+                                <span>SECURE</span>
                             </div>
                             <button className="quick-exit-btn" onClick={() => navigate('/')}>
                                 Quick Exit
@@ -287,13 +394,40 @@ const ChatPage = () => {
 
                     {/* Chat Messages */}
                     <div className="messages-container">
+                        {messages.length === 1 && (
+                            <div className="empty-chat-welcome">
+                                <div className="welcome-glow-icon">
+                                    <Scale size={40} />
+                                </div>
+                                <h3>Welcome to Parichay Legal Assistant</h3>
+                                <p>Get confidential, instant guidance on Indian laws. Select a question below or describe your issue in detail.</p>
+                                
+                                <div className="suggested-prompts-grid">
+                                    {suggestedPrompts.map((prompt, index) => (
+                                        <button 
+                                            key={index} 
+                                            className="suggested-prompt-card"
+                                            onClick={() => handleSuggestedPromptClick(prompt)}
+                                        >
+                                            <span>{prompt}</span>
+                                            <ChevronRight size={14} className="prompt-arrow" />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {messages.map((msg, idx) => (
-                            <div key={msg.id} className={`message-row ${msg.sender}`}>
+                            <div key={msg.id} className={`message-row ${msg.sender} fade-in`}>
                                 <div className="message-content">
                                     {msg.sender === 'bot' ? (
-                                        <div className="avatar bot">P</div>
+                                        <div className="avatar bot">
+                                            <Scale size={16} />
+                                        </div>
                                     ) : (
-                                        <div className="avatar user"><UserIconSVG /></div>
+                                        <div className="avatar user">
+                                            <span>U</span>
+                                        </div>
                                     )}
 
                                     <div className="msg-details">
@@ -301,14 +435,14 @@ const ChatPage = () => {
                                             {msg.text}
                                         </div>
                                         <div className="timestamp">
-                                            10:24 AM • {msg.sender === 'bot' ? 'Parichay AI' : 'Read'}
+                                            {msg.sender === 'bot' ? 'Parichay AI' : 'Sent'} • {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </div>
 
-                                        {/* Show Legal Insight Card only when backend returns it, fallback mocked here for reference when triggered */}
+                                        {/* Show Legal Insight Card conditionally */}
                                         {msg.sender === 'bot' && idx > 0 && msg.text.includes('Payment of Wages Act') && (
                                             <div className="legal-insight-card">
                                                 <div className="insight-header">
-                                                    <div className="insight-icon">i</div>
+                                                    <Info size={14} />
                                                     LEGAL INSIGHT
                                                 </div>
                                                 <div className="insight-text">
@@ -322,9 +456,11 @@ const ChatPage = () => {
                         ))}
 
                         {isTyping && (
-                            <div className="message-row bot">
+                            <div className="message-row bot fade-in">
                                 <div className="message-content">
-                                    <div className="avatar bot">P</div>
+                                    <div className="avatar bot">
+                                        <Scale size={16} />
+                                    </div>
                                     <div className="typing-wrapper">
                                         <div className="typing-bubble">
                                             <div className="typing-dots">
@@ -332,7 +468,7 @@ const ChatPage = () => {
                                                 <span className="typing-dot"></span>
                                                 <span className="typing-dot"></span>
                                             </div>
-                                            <div className="typing-text">ASSISTANT IS TYPING</div>
+                                            <span className="typing-text">ASSISTANT IS THINKING</span>
                                         </div>
                                     </div>
                                 </div>
@@ -343,45 +479,54 @@ const ChatPage = () => {
 
                     {/* Input Section */}
                     <div className="input-position-wrapper">
-                        <div className="input-pill">
-                            <button className="icon-btn" style={{ fontSize: '20px' }}>📎</button>
-                            <input
-                                type="text"
-                                className="chat-input-field"
-                                placeholder="Describe your legal issue or ask a question..."
-                                value={inputText}
-                                onChange={(e) => setInputText(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                            />
+                        <div className="input-pill-container">
+                            <div className="input-pill">
+                                <button className="icon-btn" aria-label="Attach File">
+                                    <Paperclip size={20} />
+                                </button>
+                                <input
+                                    type="text"
+                                    className="chat-input-field"
+                                    placeholder="Describe your legal issue or ask a question..."
+                                    value={inputText}
+                                    onChange={(e) => setInputText(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                />
 
-                            <button
-                                className="send-btn"
-                                onClick={handleSend}
-                                disabled={!inputText.trim()}
-                            >
-                                <SendIconSVG />
-                            </button>
-                        </div>
+                                <button
+                                    className="send-btn"
+                                    onClick={handleSend}
+                                    disabled={!inputText.trim()}
+                                    aria-label="Send Message"
+                                >
+                                    <Send size={18} />
+                                </button>
+                            </div>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '12px', pointerEvents: 'auto' }}>
-                            <button
-                                onClick={handleSubmitProblem}
-                                disabled={isSubmitting}
-                                style={{
-                                    background: 'transparent', border: 'none', color: '#FF5A2C', fontSize: '14px',
-                                    fontWeight: '600', cursor: isSubmitting ? 'not-allowed' : 'pointer', marginBottom: '8px', textDecoration: 'underline',
-                                    opacity: isSubmitting ? 0.6 : 1
-                                }}
-                            >
-                                {isSubmitting ? 'Saving Case...' : 'Submit Problem & Continue'}
-                            </button>
-                            <div style={{ fontSize: '11px', color: '#999', textAlign: 'center' }}>
-                                Parichay can make mistakes. Consider checking important information.
+                            <div className="input-actions-row">
+                                <button
+                                    onClick={handleSubmitProblem}
+                                    disabled={isSubmitting}
+                                    className="submit-problem-btn"
+                                >
+                                    {isSubmitting ? 'Saving Case...' : (user ? 'Submit Problem & Continue' : 'Log In to Submit Problem')}
+                                </button>
+                                <span className="input-disclaimer">
+                                    Parichay AI can make mistakes. Please verify important information.
+                                </span>
                             </div>
                         </div>
                     </div>
                 </main>
             </div>
+            
+            {/* Overlay for mobile sidebar */}
+            {isMobileSidebarOpen && (
+                <div 
+                    className="mobile-sidebar-overlay" 
+                    onClick={() => setIsMobileSidebarOpen(false)}
+                ></div>
+            )}
         </div>
     );
 };
