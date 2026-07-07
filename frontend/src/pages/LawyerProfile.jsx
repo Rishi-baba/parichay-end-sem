@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { MapPin, Star, Calendar, MessageSquare, ArrowLeft, ShieldCheck } from 'lucide-react';
 import '../styles/LawyerProfile.css';
 
+import API_URL from '../api/api';
+
 const getRating = (name = '', rating = 0) => {
   if (rating && rating >= 4) return Number(rating).toFixed(1);
   let hash = 0;
@@ -26,6 +28,8 @@ const LawyerProfile = () => {
         photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200&h=200"
     };
 
+    const processedPhoto = lawyer.photo ? lawyer.photo.replace('http://localhost:5000', API_URL) : null;
+
     return (
         <div className="lawyer-profile-page container">
             <button className="back-link-btn" onClick={() => navigate(-1)}>
@@ -34,7 +38,7 @@ const LawyerProfile = () => {
 
             <div className="profile-header-card">
                 <div className="profile-main-info">
-                    <img src={lawyer.photo} alt={lawyer.name} className="profile-photo-lg" />
+                    <img src={processedPhoto || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(lawyer.name)}`} alt={lawyer.name} className="profile-photo-lg" />
                     <div className="profile-text">
                         <div className="profile-name-row">
                             <h1>{lawyer.name}</h1>

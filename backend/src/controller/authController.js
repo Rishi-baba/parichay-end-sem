@@ -4,6 +4,12 @@ const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
 const { generateRefreshToken, generateAccessToken } = require("../utils/generateTokens");
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+};
+
 
 exports.register = async (req, res) => {
 
@@ -36,16 +42,12 @@ exports.register = async (req, res) => {
     await user.save();
 
     res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
-      sameSite: "strict",
+      ...cookieOptions,
       maxAge: 15 * 60 * 1000,
     })
 
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
-      sameSite: "strict",
+      ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     })
 
@@ -103,16 +105,12 @@ exports.login = async (req, res) => {
     await user.save();
 
     res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
-      sameSite: "strict",
+      ...cookieOptions,
       maxAge: 15 * 60 * 1000,
     })
 
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
-      sameSite: "strict",
+      ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     })
 
@@ -158,17 +156,9 @@ exports.logout = async (req, res) => {
       await user.save();
     }
 
-    res.clearCookie("accessToken", {
-      httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
-      sameSite: "strict",
-    })
+    res.clearCookie("accessToken", cookieOptions)
 
-    res.clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
-      sameSite: "strict",
-    })
+    res.clearCookie("refreshToken", cookieOptions)
 
     return res.status(200).json({
       success: true,
@@ -203,8 +193,7 @@ exports.refreshToken = async (req, res) => {
     const newAccessToken = generateAccessToken(user._id);
 
     res.cookie("accessToken", newAccessToken, {
-      httpOnly: true,
-      sameSite: "strict",
+      ...cookieOptions,
       maxAge: 15 * 60 * 1000,
     });
 

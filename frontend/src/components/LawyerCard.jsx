@@ -2,6 +2,8 @@ import React from 'react';
 import { Star, MapPin, MessageCircle, ArrowRight } from 'lucide-react';
 import '../styles/LawyerCard.css';
 
+import API_URL from '../api/api';
+
 // Produce a stable 4.0–5.0 rating from a lawyer's name so it stays consistent across renders
 const getDisplayRating = (name = '', rating = 0) => {
   if (rating && rating >= 4) return rating.toFixed(1);
@@ -23,11 +25,13 @@ const LawyerCard = ({
     bio,
     onClick
 }) => {
+    const processedPhoto = photo ? photo.replace('http://localhost:5000', API_URL) : null;
+
     return (
         <div className="lawyer-card" onClick={onClick}>
             <div className="lawyer-card-header">
                 <div className="lawyer-photo-wrapper">
-                    <img src={photo || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`} alt={name} className="lawyer-photo" />
+                    <img src={processedPhoto || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`} alt={name} className="lawyer-photo" />
                     <div className="verified-badge" title="Verified Professional">
                         <span className="shield-icon">🛡️</span>
                     </div>
